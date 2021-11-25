@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifiez le DOM</title>
+    <style>
+        article {
+            margin: auto;
+            margin-bottom: 20px;
+            width: 90%;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        
+        #main {
+            font-weight: bold;
+            color: red;
+        }
+        
+        .important {
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <script>
+            let paragraphe = document.createElement("p");
+            let main = document.getElementById('main');
+            main.appendChild(paragraphe);
+            paragraphe.innerHTML = 'Mon <strong>grand</strong> contenu';
+            paragraphe.classList.add('important');
+            paragraphe.style.color = 'green';
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parallélisez plusieurs requêtes HTTP</title>
+</head>
+
+<body>
+    <script>
+        // Enchaînez des requêtes avec les callbacks
+        var GETRequestCount = 0;
+        var GETRequestResults = [];
+
+        function onGETRequestDone(err, result) {
+            if (err) throw err;
+
+            GETRequestCount++;
+            GETRequestResults.push(result);
+
+            if (GETRequestCount == 2) {
+                post(url3, function(err, result) {
+                    if (err) throw err;
+
+                    // We are done here !
+                });
+            }
+        }
+
+        get(url1, onGETRequestDone);
+        get(url2, onGETRequestDone);
+        //Enchaînez des requêtes avec les Promise
+        Promise.all([get(url1), get(url2)])
+            .then(function(results) {
+                return Promise.all([results, post(url3)]);
+            })
+            .then(function(allResults) {
+                // We are done here !
+            });
+        // Enchaînez des requêtes avec async / await
+        async function requests() {
+            var getResults = await Promise.all([get(url1), get(url2)]);
+            var postResult = await post(url3);
+            return [getResults, postResult];
+        }
+
+        requests().then(function(allResults) {
+            // We are done here !
+        });
+    </script>
+</body>
+
+</html>
